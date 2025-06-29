@@ -14,7 +14,7 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: Readonly<BreadcrumbProps>) {
   return (
-    <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
+    <nav className="flex items-center space-x-2 text-sm text-gray-600 py-2">
       {items.map((item, index) => (
         <div key={index} className="flex items-center space-x-2">
           {index > 0 && <ChevronRight className="h-4 w-4" />}

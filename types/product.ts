@@ -43,7 +43,70 @@ export interface Product {
   badgeProductVariationsExclude: []
 };
 
+interface ImageEntry {
+  url: string;
+}
 
+export interface ImageMap {
+  [key: string]: ImageEntry;
+}
+
+export interface ProductDetail {
+  id: number;
+  product_id: number;
+  regular_price: string;
+  discount_price: string;
+}
+
+export interface Merchant {
+  id: number;
+  shop_name: string;
+}
+
+export interface Media {
+  id: number;
+  model_type: string;
+  model_id: number;
+  collection_name: string;
+  file_path: string;
+  file_type: string;
+  tags: string;
+  created_at: string;
+  updated_at: string;
+  full_url: string;
+}
+
+export interface Brand {
+  id: number;
+  merchant_id: number | null;
+  name: string;
+  slug: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  image: string;
+  media: Media[];
+}
+
+export interface ShopProduct {
+  id: number;
+  merchant_id: number;
+  product_id: number;
+  active_status: number;
+  status: string;
+  product_type: number;
+  regular_price: string;
+  e_price: string;
+  e_discount_price: string;
+  packly_commission: string;
+  id_delivery_fee: string;
+  od_delivery_fee: string;
+  ed_delivery_fee: string;
+  created_at: string;
+  updated_at: string;
+  status_label: string;
+  status_color: string;
+}
 export interface ProductColor {
   name: string
   value: string
@@ -56,12 +119,13 @@ export interface ProductSize {
 }
 
 export interface Seller {
-  name: string
-  verified: boolean
-  rating: number
-  shipOnTime: number
-  chatResponse: number
-  shopRating: number
+  id: string
+  shop_name: string
+  verified?: boolean
+  rating?: number
+  shipOnTime?: number
+  chatResponse?: number
+  shopRating?: number
 }
 
 export interface CartItem {

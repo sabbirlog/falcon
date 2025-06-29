@@ -3,6 +3,7 @@
 import { Product } from "@/types/product"
 import { ShoppingCart, Star } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter } from "../ui/card"
@@ -12,6 +13,8 @@ export default function ProductCard ({
 }: Readonly<{
     product: Product
 }>) {
+
+    const router = useRouter();
 
     return (
         <Card key={product.id} className="group shadow-none border border-gray-100">
@@ -31,7 +34,7 @@ export default function ProductCard ({
                     }
                 </div>
     
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
+                <h3 className="font-semibold text-gray-900 hover:text-emerald-500 cursor-pointer mb-2 line-clamp-2" onClick={() => router.push(`/product/${product.slug}`)}>{product.name}</h3>
     
                 <div className="flex items-center mb-2">
                     <div className="flex items-center">
@@ -47,8 +50,8 @@ export default function ProductCard ({
                 </div>
     
                 <div className="flex items-center space-x-2 mb-4">
-                    <span className="text-2xl font-bold text-gray-900">${product.discount_price}</span>
-                    <span className="text-sm text-gray-500 line-through">${product.regular_price}</span>
+                    <span className="text-2xl font-bold text-gray-900">৳{product.discount_price}</span>
+                    <span className="text-sm text-gray-500 line-through">৳{product.regular_price}</span>
                 </div>
             </CardContent>
     

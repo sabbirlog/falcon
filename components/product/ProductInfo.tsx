@@ -1,13 +1,37 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import type { Product, ProductColor, ProductSize } from "@/types/product"
+import type { Brand, Media, Merchant, ProductColor, ProductDetail, ProductSize, ShopProduct } from "@/types/product"
 import { Heart, Minus, Plus, Share2 } from "lucide-react"
+import { Badge } from "../ui/badge"
+
+const sizes = [
+  { name: "XL", available: true },
+  { name: "XS", available: true },
+  { name: "S", available: true },
+  { name: "M", available: false },
+  { name: "L", available: true },
+]
+
+const colors = [
+  { name: "Beige", value: "#F5F5DC" },
+  { name: "Red", value: "#DC143C" },
+  { name: "Navy Blue", value: "#000080" },
+  { name: "Black", value: "#000000" },
+]
 
 interface ProductInfoProps {
-  product: Product
+  productDetails: {
+    name: string
+    rating_count: number
+    rating_avg: number
+    product_detail: ProductDetail
+    merchant: Merchant
+    media: Media
+    brand: Brand
+    shopProduct: ShopProduct
+  },
   selectedColor: ProductColor | null
   selectedSize: ProductSize | null
   quantity: number
@@ -18,7 +42,7 @@ interface ProductInfoProps {
 }
 
 export default function ProductInfo({
-  product,
+  productDetails,
   selectedColor,
   selectedSize,
   quantity,
@@ -39,15 +63,15 @@ export default function ProductInfo({
     <div className="space-y-6">
       {/* Product Title */}
       <div>
-        <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 leading-tight">{product.name}</h1>
+        <h1 className="text-[20px] font-medium text-[#0F172A] leading-tight">{productDetails?.name}</h1>
       </div>
 
       {/* Rating and Actions */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="flex items-center">{renderStars(product.rating)}</div>
-          <span className="text-sm font-medium text-gray-900">{product.rating}</span>
-          <span className="text-sm text-gray-500">({product.reviewCount.toLocaleString()})</span>
+          <div className="flex items-center">{renderStars(productDetails?.rating_count || 5)}</div>
+          <span className="text-sm font-medium text-gray-900">{productDetails?.rating_avg}</span>
+          {/* <span className="text-sm text-gray-500">({product.reviewCount.toLocaleString()})</span> */}
         </div>
         <div className="flex items-center space-x-2">
           <Button variant="ghost" size="sm">
@@ -61,27 +85,24 @@ export default function ProductInfo({
 
       {/* Price */}
       <div className="flex items-center space-x-3">
-        <span className="text-3xl font-bold text-emerald-600">৳{product.price.toLocaleString()}</span>
-        <span className="text-lg text-gray-500 line-through">৳{product.originalPrice.toLocaleString()}</span>
+        <span className="text-3xl font-bold text-emerald-600">৳{productDetails?.product_detail.discount_price.toLocaleString()}</span>
+        <span className="text-lg text-gray-500 line-through">৳{productDetails?.product_detail?.regular_price.toLocaleString()}</span>
       </div>
 
       {/* Promotion */}
-      {product.promotion && (
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600">Promotion</span>
-          <Badge className="bg-orange-500 text-white">{product.promotion}</Badge>
-          <Badge className="bg-pink-500 text-white">MD SOJIB HOSSAIN</Badge>
-        </div>
-      )}
+      <div className="flex items-center space-x-2">
+        <span className="text-sm text-gray-600">Promotion</span>
+        <Badge className="bg-orange-500 text-white">Min. spend ৳550</Badge>
+      </div>
 
       {/* Available Colors */}
       <div className="space-y-3">
         <div className="flex items-center space-x-2">
           <span className="text-sm font-medium text-gray-700">Available Color:</span>
-          <span className="text-sm text-gray-900">{selectedColor?.name || "Navy Blue"}</span>
+          <span className="text-sm text-gray-900">{selectedColor?.name ?? "Navy Blue"}</span>
         </div>
         <div className="flex space-x-2">
-          {product.colors.map((color) => (
+          {colors?.map((color) => (
             <button
               key={color.name}
               onClick={() => onColorSelect(color)}
@@ -103,7 +124,7 @@ export default function ProductInfo({
           <span className="text-sm text-gray-900">{selectedSize?.name || "XS"}</span>
         </div>
         <div className="flex space-x-2">
-          {product.sizes.map((size) => (
+          {sizes?.map((size) => (
             <button
               key={size.name}
               onClick={() => onSizeSelect(size)}
