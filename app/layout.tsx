@@ -1,3 +1,5 @@
+import Footer from "@/components/Footer"
+import Header from "@/components/Header"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import type React from "react"
@@ -6,18 +8,23 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "RentYard - Property Onboarding",
-  description: "Property management onboarding form",
+  title: "Falcon - Your Trusted Online Marketplace",
+  description:
+    "Discover amazing products at unbeatable prices. Electronics, home appliances, and more with fast delivery.",
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        <div className="min-h-screen flex flex-col">{children}</div>
+        <Footer />
+      </body>
     </html>
   )
 }
