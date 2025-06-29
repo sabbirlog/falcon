@@ -1,8 +1,10 @@
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
+import ReactQueryProvider from "@/providers/ReactQueryProvider"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import type React from "react"
+import { Suspense } from "react"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -21,9 +23,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        <div className="min-h-screen flex flex-col">{children}</div>
-        <Footer />
+        <Suspense>
+          <ReactQueryProvider>
+            <Header />
+            <div className="min-h-screen flex flex-col">{children}</div>
+            <Footer />
+          </ReactQueryProvider>
+        </Suspense>
       </body>
     </html>
   )

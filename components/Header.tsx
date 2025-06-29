@@ -6,8 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import type { Category } from "@/types/product"
 import { HelpCircle, Menu, Package, Search, ShoppingCart, Store, User } from "lucide-react"
+import Link from "next/link"
 import { useState } from "react"
 import CategoriesDrawer from "./CategoriesDrawer"
+import { Logo } from "./icons"
 
 const mockCategories: Category[] = [
   {
@@ -114,16 +116,16 @@ export default function Header() {
   return (
     <header className="w-full sticky top-0 z-50">
       {/* Main Header */}
-      <div className="bg-slate-800 text-white">
+      <div className="bg-[#0F172A] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <div className="flex items-center space-x-2 flex-shrink-0">
-              <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
-                <span className="text-slate-800 font-bold text-sm">🦅</span>
-              </div>
+            <Link href='/' className="flex items-center space-x-2 flex-shrink-0">
+              <span className="text-slate-800 font-bold text-sm">
+                <Logo />
+              </span>
               <span className="text-xl lg:text-2xl font-bold">FALCON</span>
-            </div>
+            </Link>
 
             {/* Search Bar - Hidden on mobile */}
             <div className="hidden md:flex flex-1 max-w-2xl mx-4 lg:mx-8">
@@ -224,7 +226,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Search Bar - Visible only on mobile */}
       <div className="md:hidden bg-white border-b px-4 py-3">
         <div className="relative">
           <Input type="text" placeholder="Search for anything...." className="w-full pr-12" />
@@ -234,34 +235,34 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Secondary Navigation - Hidden on mobile, shown in mobile menu */}
       <div className="hidden lg:block bg-gray-50 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-12 overflow-x-auto">
             {/* Categories */}
-            <div className="flex items-center space-x-6 min-w-0 flex-shrink-0">
+            <div className="flex items-center">
               {mockCategories.length > 0 && <CategoriesDrawer categories={mockCategories} />}
               {mockCategories.slice(0, 5).map((category) => (
                 <Button
                   key={category.id}
                   variant="ghost"
-                  className="text-gray-700 hover:text-emerald-600 font-medium whitespace-nowrap"
+                  className="text-[#0F172A] font-medium whitespace-nowrap text-[14px]"
                 >
                   {category.name}
                 </Button>
               ))}
             </div>
 
-            {/* Utility Links */}
-            <div className="flex items-center space-x-6 flex-shrink-0">
-              {utilityLinks.map((link) => (
+            <div className="flex items-center">
+              {utilityLinks?.map((link) => (
                 <Button
                   key={link.label}
                   variant="ghost"
-                  className="text-gray-600 hover:text-emerald-600 text-sm font-medium whitespace-nowrap"
+                  className="text-sm"
                 >
                   <link.icon className="h-4 w-4 mr-1" />
-                  {link.label}
+                  <span className="text-[#475569] !text-sm font-medium">
+                    {link.label}
+                  </span>
                 </Button>
               ))}
             </div>
