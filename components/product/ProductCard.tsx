@@ -1,5 +1,7 @@
 'use client'
 
+import { addToCart } from "@/redux/features/cart/cartSlice"
+import { useAppDispatch } from "@/redux/hooks"
 import { Product } from "@/types/product"
 import { ShoppingCart, Star } from "lucide-react"
 import Image from "next/image"
@@ -8,13 +10,31 @@ import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter } from "../ui/card"
 
-export default function ProductCard ({
+export default function ProductCard({
     product
 }: Readonly<{
     product: Product
 }>) {
 
     const router = useRouter();
+    const dispatch = useAppDispatch();
+
+    const handleAddToCart = (product: Product) => {
+        const cartItem = {
+            id: product.id,
+            name: product.name,
+            price: product.discount_price,
+            originalPrice: product.regular_price,
+            image: product.thumbnail,
+            color: "Default",
+            size: "Default",
+            quantity: 1,
+        }
+
+        dispatch(addToCart(cartItem))
+        alert(`${product.name} added to cart!`)
+    }
+
 
     return (
         <Card key={product.id} className="group shadow-none border border-gray-100">
@@ -33,9 +53,9 @@ export default function ProductCard ({
                         )
                     }
                 </div>
-    
+
                 <h3 className="font-semibold text-gray-900 hover:text-emerald-500 cursor-pointer mb-2 line-clamp-2" onClick={() => router.push(`/product/${product.slug}`)}>{product.name}</h3>
-    
+
                 <div className="flex items-center mb-2">
                     <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (
@@ -48,15 +68,15 @@ export default function ProductCard ({
                     </div>
                     <span className="text-sm text-gray-500 ml-2">({product.rating_avg})</span>
                 </div>
-    
+
                 <div className="flex items-center space-x-2 mb-4">
                     <span className="text-2xl font-bold text-gray-900">৳{product.discount_price}</span>
                     <span className="text-sm text-gray-500 line-through">৳{product.regular_price}</span>
                 </div>
             </CardContent>
-    
+
             <CardFooter className="p-4 pt-0">
-                <Button className="w-full text-white cursor-pointer bg-emerald-600 hover:bg-emerald-700">
+                <Button className="w-full text-white cursor-pointer bg-emerald-600 hover:bg-emerald-700" onClick={() => handleAddToCart(product)}>
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     Add to Cart
                 </Button>

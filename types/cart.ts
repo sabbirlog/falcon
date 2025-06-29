@@ -1,14 +1,13 @@
 export interface CartItem {
-  id: string
+  id: number
   name: string
   color: string
   size: string
-  price: number
-  originalPrice: number
+  price: string
+  originalPrice: string
   quantity: number
   image: string
-  vendor: string
-  selected: boolean
+  selected?: boolean
 }
 
 export interface CartState {

@@ -4,30 +4,45 @@ import Breadcrumb from "@/components/Breadcrumb"
 import { CartHeader } from "@/components/cart/CartHeader"
 import { CartItemComponent } from "@/components/cart/CartItem"
 import { OrderSummary } from "@/components/cart/OrderSummary"
-import { useCart } from "@/hooks/useCart"
+import { clearCart, removeFromCart, selectAllItems, selectCartItems, selectCartTotalItems, toggleItemSelection, updateQuantity } from "@/redux/features/cart/cartSlice"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { useState } from "react"
 
 export default function CartPage() {
-    const {
-        cartState,
-        updateQuantity,
-        removeItem,
-        toggleItemSelection,
-        toggleSelectAll,
-        clearAll,
-        updateCouponCode,
-        toggleAgreeToTerms,
-        totalPrice,
-        totalItems,
-    } = useCart()
+    const dispatch = useAppDispatch()
+    const cartItems = useAppSelector(selectCartItems)
+    const totalItems = useAppSelector(selectCartTotalItems)
+    
+    const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false)
+
+    const allSelected = cartItems.length > 0 && cartItems.every((item) => item.selected)
+
+    const handleUpdateQuantity = (id: number, quantity: number) => {
+        dispatch(updateQuantity({ id, quantity }))
+    }
+
+    const handleRemoveItem = (id: number) => {
+        dispatch(removeFromCart(id))
+    }
+
+    const handleToggleItemSelection = (id: number) => {
+        dispatch(toggleItemSelection(id))
+    }
+
+    const handleToggleSelectAll = () => {
+        dispatch(selectAllItems(!allSelected))
+    }
+
+    const handleClearAll = () => {
+        if (window.confirm("Are you sure you want to clear all items from your cart?")) {
+            dispatch(clearCart())
+        }
+    }
 
     const handleProceedToCheckout = () => {
-        if (cartState.agreeToTerms && totalItems > 0) {
-            // Handle checkout logic here
-            console.log("Proceeding to checkout with:", {
-                selectedItems: cartState.items.filter((item) => item.selected),
-                totalPrice,
-                couponCode: cartState.couponCode,
-            })
+        if (agreeToTerms && totalItems > 0) {
+            const selectedItems = cartItems.filter((item) => item.selected)
+            console.log("Proceeding to checkout with:", selectedItems)
             alert("Proceeding to checkout!")
         }
     }
@@ -43,25 +58,25 @@ export default function CartPage() {
                     {/* Cart Items */}
                     <div className="lg:col-span-2">
                         <CartHeader
-                            itemCount={cartState.items.length}
-                            selectAll={cartState.selectAll}
-                            onToggleSelectAll={toggleSelectAll}
-                            onClearAll={clearAll}
+                            itemCount={cartItems.length}
+                            selectAll={allSelected}
+                            onToggleSelectAll={handleToggleSelectAll}
+                            onClearAll={handleClearAll}
                         />
 
                         <div className="bg-white rounded-lg border border-gray-200 p-6">
-                            {cartState.items.length === 0 ? (
+                            {cartItems?.length === 0 ? (
                                 <div className="text-center py-12">
                                     <p className="text-gray-500 text-lg">Your cart is empty</p>
                                 </div>
                             ) : (
-                                cartState.items.map((item) => (
+                                cartItems?.map((item) => (
                                     <CartItemComponent
                                         key={item.id}
                                         item={item}
-                                        onQuantityChange={updateQuantity}
-                                        onRemove={removeItem}
-                                        onToggleSelect={toggleItemSelection}
+                                        onQuantityChange={handleUpdateQuantity}
+                                        onRemove={handleRemoveItem}
+                                        onToggleSelect={handleToggleItemSelection}
                                     />
                                 ))
                             )}
@@ -72,16 +87,13 @@ export default function CartPage() {
                     <div className="lg:col-span-1">
                         <OrderSummary
                             totalItems={totalItems}
-                            totalPrice={totalPrice}
-                            couponCode={cartState.couponCode}
-                            agreeToTerms={cartState.agreeToTerms}
-                            onCouponChange={updateCouponCode}
-                            onToggleTerms={toggleAgreeToTerms}
+                            agreeToTerms={agreeToTerms}
+                            onToggleTerms={() => setAgreeToTerms(!agreeToTerms)}
                             onProceedToCheckout={handleProceedToCheckout}
                         />
                     </div>
                 </div>
             </div>
-        </main> 
+        </main>
     )
 }

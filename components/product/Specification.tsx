@@ -12,7 +12,7 @@ interface ProductSpecificationProps {
 
 export default function ProductSpecification({ title = "Specifications", specification, className }: Readonly<ProductSpecificationProps>) {
     return (
-        <div className={clsx(`bg-white py-[22px] px-[27px] rounded-[4px] ${className}`)}>
+        <div className={clsx(`bg-white py-[22px] px-[27px] rounded-[4px] mb-6 ${className}`)}>
             <h2 className="text-[24px] font-medium text-[#252B42] mb-[16px]">{title}</h2>
 
             <SeeMoreToggle maxLines={4} className="text-base">

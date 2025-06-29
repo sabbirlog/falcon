@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import ReactQueryProvider from "@/providers/ReactQueryProvider"
+import ReduxProvider from "@/providers/ReduxProvider"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import type React from "react"
@@ -25,9 +26,11 @@ export default function RootLayout({
       <body className={inter.className}>
         <Suspense>
           <ReactQueryProvider>
-            <Header />
-            <div className="min-h-screen flex flex-col">{children}</div>
-            <Footer />
+            <ReduxProvider>
+              <Header />
+              <div className="min-h-screen flex flex-col">{children}</div>
+              <Footer />
+            </ReduxProvider>
           </ReactQueryProvider>
         </Suspense>
       </body>

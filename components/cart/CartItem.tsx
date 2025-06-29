@@ -7,9 +7,9 @@ import { Minus, Plus, Trash2 } from "lucide-react"
 
 interface CartItemProps {
   item: CartItem
-  onQuantityChange: (id: string, quantity: number) => void
-  onRemove: (id: string) => void
-  onToggleSelect: (id: string) => void
+  onQuantityChange: (id: number, quantity: number) => void
+  onRemove: (id: number) => void
+  onToggleSelect: (id: number) => void
 }
 
 export function CartItemComponent({ item, onQuantityChange, onRemove, onToggleSelect }: Readonly<CartItemProps>) {
@@ -22,7 +22,7 @@ export function CartItemComponent({ item, onQuantityChange, onRemove, onToggleSe
           <div className="w-6 h-6 border border-gray-300 rounded mr-2 flex items-center justify-center">
             <span className="text-xs">🏪</span>
           </div>
-          <span className="font-medium">{item.vendor}</span>
+          {/* <span className="font-medium">{item.vendor}</span> */}
           <span className="ml-2 text-gray-400">›</span>
         </div>
       </div>

@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { selectCartTotalItems } from "@/redux/features/cart/cartSlice"
+import { useAppSelector } from "@/redux/hooks"
 import type { Category } from "@/types/product"
 import { HelpCircle, Menu, Package, Search, ShoppingCart, Store, User } from "lucide-react"
 import Link from "next/link"
@@ -113,11 +115,14 @@ const utilityLinks = [
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
+  const totalItems = useAppSelector(selectCartTotalItems)
+
+
   return (
     <header className="w-full sticky top-0 z-50">
       {/* Main Header */}
       <div className="bg-[#0F172A] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href='/' className="flex items-center space-x-2 flex-shrink-0">
@@ -155,9 +160,16 @@ export default function Header() {
               <a href="/cart">
                 <Button variant="ghost" size="sm" className="relative text-white hover:bg-slate-700">
                   <ShoppingCart className="h-5 w-5 lg:h-6 lg:w-6" />
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
-                    12
-                  </Badge>
+                  {
+                    totalItems > 0 && (
+                      <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
+                        {
+                          totalItems
+                        }
+                      </Badge>
+                    )
+                  }
+
                 </Button>
               </a>
 
@@ -236,7 +248,7 @@ export default function Header() {
       </div>
 
       <div className="hidden lg:block bg-gray-50 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto">
           <div className="flex items-center justify-between h-12 overflow-x-auto">
             {/* Categories */}
             <div className="flex items-center">
