@@ -2,8 +2,7 @@ import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 const clientManagementInstance = (): AxiosInstance => {
   const axiosInstance = axios.create({
-    baseURL:
-      "http://157.230.240.97:9999/api/v1",
+    baseURL: process.env.NEXT_PUBLIC_API_BASE,
   });
 
   axiosInstance.interceptors.request.use(
