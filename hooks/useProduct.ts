@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import type { Product, ProductColor, ProductSize } from "@/types/product"
+import type { ProductColor, ProductSize } from "@/types/product"
 import { useCallback, useState } from "react"
 
-export function useProduct(initialProduct?: Product) {
+export function useProduct(initialProduct?: any) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [selectedColor, setSelectedColor] = useState<ProductColor | null>(initialProduct?.colors?.[0] || null)
   const [selectedSize, setSelectedSize] = useState<ProductSize | null>(initialProduct?.sizes?.[0] || null)
