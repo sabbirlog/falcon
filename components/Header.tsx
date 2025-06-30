@@ -1,110 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
+import { getCategories } from "@/api/product"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { selectCartTotalItems } from "@/redux/features/cart/cartSlice"
 import { useAppSelector } from "@/redux/hooks"
-import type { Category } from "@/types/product"
+import { useQuery } from "@tanstack/react-query"
 import { HelpCircle, Menu, Package, Search, ShoppingCart, Store, User } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import CategoriesDrawer from "./CategoriesDrawer"
 import { Logo } from "./icons"
-
-const mockCategories: Category[] = [
-  {
-    id: 1,
-    name: "Women's & Girls' Fashion",
-    slug: "womens-girls-fashion",
-    image: "http://157.230.240.97:9999/storage/media/20250628_153959_bfb3d170-2bfc-4b69-87f5-c201b7452035.png",
-    subcategories: [
-      {
-        id: 1,
-        name: "Bag",
-        slug: "womens-girls-fashion-bag",
-        image: "",
-        subchilds: [
-          { id: 1, name: "Wallets", slug: "bag-wallets-1", image: "" },
-          { id: 2, name: "Bag Charms & Accessories", slug: "bag-bag-charms-accessories-1", image: "" },
-          { id: 3, name: "Crossbody & Shoulder Bags", slug: "bag-crossbody-shoulder-bags-1", image: "" },
-          { id: 4, name: "Tote Bags", slug: "bag-tote-bags-1", image: "" },
-          { id: 5, name: "Backpacks", slug: "bag-backpacks-1", image: "" },
-        ],
-      },
-      {
-        id: 2,
-        name: "Watches",
-        slug: "womens-girls-fashion-watches",
-        image: "",
-        subchilds: [
-          { id: 9, name: "Accessories", slug: "watches-accessories-2", image: "" },
-          { id: 10, name: "Sports", slug: "watches-sports-2", image: "" },
-          { id: 11, name: "Fashion", slug: "watches-fashion-2", image: "" },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Men's & Boys' Fashion",
-    slug: "mens-boys-fashion",
-    image: "http://157.230.240.97:9999/storage/media/20250628_154010_3b9aa256-ea7c-42e7-830d-a9f3d2c3721e.png",
-    subcategories: [
-      {
-        id: 8,
-        name: "Eye Wear",
-        slug: "mens-boys-fashion-eye-wear",
-        image: "",
-        subchilds: [{ id: 40, name: "Eyeglasses", slug: "eye-wear-eyeglasses-8", image: "" }],
-      },
-      {
-        id: 10,
-        name: "Accessories",
-        slug: "mens-boys-fashion-accessories",
-        image: "",
-        subchilds: [
-          { id: 41, name: "Brooches And Cufflinks", slug: "accessories-brooches-and-cufflinks-10", image: "" },
-          { id: 42, name: "Umbrellas", slug: "accessories-umbrellas-10", image: "" },
-          { id: 43, name: "Ties", slug: "accessories-ties-10", image: "" },
-        ],
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Electronic Accessories",
-    slug: "electronic-accessories",
-    image: "http://157.230.240.97:9999/storage/media/20250628_154022_728712a7-2393-4a3c-a582-033ff2cf833b.png",
-    subcategories: [
-      {
-        id: 13,
-        name: "Computer Accessories",
-        slug: "electronic-accessories-computer-accessories",
-        image: "",
-        subchilds: [
-          { id: 57, name: "Keyboards", slug: "computer-accessories-keyboards-13", image: "" },
-          { id: 58, name: "Mice & Keyboard Combos", slug: "computer-accessories-mice-keyboard-combos-13", image: "" },
-        ],
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "TV & Home Appliances",
-    slug: "tv-home-appliances",
-    image: "http://157.230.240.97:9999/storage/media/20250628_154032_de45926b-ce2c-451b-b455-a05fcab66254.png",
-    subcategories: [],
-  },
-  {
-    id: 5,
-    name: "Electronics Device",
-    slug: "electronics-device",
-    image: "http://157.230.240.97:9999/storage/media/20250628_154041_7908c4d9-b1fb-4768-acc0-1b0170ec84c5.png",
-    subcategories: [],
-  },
-]
+import HeaderSkeleton from "./skeletons/HeaderSkeleton"
 
 const utilityLinks = [
   { icon: Package, label: "TRACK ORDER" },
@@ -113,9 +23,18 @@ const utilityLinks = [
 ]
 
 export default function Header() {
+    const { data: getCategoriesData, isLoading: CTGLoading } = useQuery({
+    queryKey: ["category-data"],
+    queryFn: getCategories,
+  });
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const totalItems = useAppSelector(selectCartTotalItems)
+
+  if(CTGLoading) {
+    return <HeaderSkeleton />
+  }
 
 
   return (
@@ -205,7 +124,7 @@ export default function Header() {
                     <div className="space-y-2">
                       <h3 className="font-semibold text-emerald-600">Categories</h3>
                       <div className="space-y-1">
-                        {mockCategories.slice(0, 8).map((category) => (
+                        {getCategoriesData?.data.slice(0, 8).map((category: any) => (
                           <Button
                             key={category.id}
                             variant="ghost"
@@ -225,7 +144,7 @@ export default function Header() {
                     <div className="space-y-2 pt-4 border-t">
                       {utilityLinks.map((link) => (
                         <Button key={link.label} variant="ghost" className="w-full justify-start">
-                          <link.icon className="h-4 w-4 mr-2" />
+                          <link.icon className="h-4 w-4 mr-1" />
                           {link.label}
                         </Button>
                       ))}
@@ -247,17 +166,17 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="hidden lg:block bg-gray-50 border-b">
+      <div className="hidden lg:block bg-gray-50 border-b border-gray-50 shadow-sm">
         <div className="container mx-auto">
           <div className="flex items-center justify-between h-12 overflow-x-auto">
             {/* Categories */}
             <div className="flex items-center">
-              {mockCategories.length > 0 && <CategoriesDrawer categories={mockCategories} />}
-              {mockCategories.slice(0, 5).map((category) => (
+              {getCategoriesData?.data.length > 0 && <CategoriesDrawer categories={getCategoriesData?.data} />}
+              {getCategoriesData?.data.slice(0, 3).map((category: any) => (
                 <Button
                   key={category.id}
                   variant="ghost"
-                  className="text-[#0F172A] font-medium whitespace-nowrap text-[14px]"
+                  className="text-[#0F172A] font-medium whitespace-nowrap text-[12px]"
                 >
                   {category.name}
                 </Button>
@@ -269,10 +188,10 @@ export default function Header() {
                 <Button
                   key={link.label}
                   variant="ghost"
-                  className="text-sm"
+                  className="text-[12px]"
                 >
                   <link.icon className="h-4 w-4 mr-1" />
-                  <span className="text-[#475569] !text-sm font-medium">
+                  <span className="text-[#475569] text-[10px] font-medium">
                     {link.label}
                   </span>
                 </Button>

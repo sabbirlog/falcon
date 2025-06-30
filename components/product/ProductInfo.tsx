@@ -38,7 +38,8 @@ interface ProductInfoProps {
   onColorSelect: (color: ProductColor) => void
   onSizeSelect: (size: ProductSize) => void
   onQuantityChange: (quantity: number) => void
-  onAddToCart: () => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onAddToCart: (e: any) => void
 }
 
 export default function ProductInfo({
@@ -160,7 +161,7 @@ export default function ProductInfo({
 
       {/* Add to Cart Button */}
       <Button
-        onClick={onAddToCart}
+        onClick={() => onAddToCart(productDetails)}
         className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-white font-medium"
         disabled={!selectedColor || !selectedSize}
       >

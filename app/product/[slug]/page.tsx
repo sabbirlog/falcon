@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 
@@ -9,6 +10,8 @@ import ProductGallery from "@/components/product/ProductGallery"
 import ProductInfo from "@/components/product/ProductInfo"
 import ProductSpecification from "@/components/product/Specification"
 import { useProduct } from "@/hooks/useProduct"
+import { addToCart } from "@/redux/features/cart/cartSlice"
+import { useAppDispatch } from "@/redux/hooks"
 import { useQuery } from "@tanstack/react-query"
 import { useParams } from "next/navigation"
 
@@ -20,13 +23,28 @@ const breadcrumbItems = [
 
 export default function ProductPage() {
     const params = useParams();
+    const dispatch = useAppDispatch();
 
     const { data: getProductData, isLoading: productLoading } = useQuery({
         queryKey: ["product-data", params?.slug],
         queryFn: () => getSingleProduct(params?.slug as string),
     });
 
-    console.log('getProductData', getProductData)
+    const handleAddToCart = (product: any) => {
+        const cartItem = {
+            id: product.id,
+            name: product.name,
+            price: product?.product_detail.discount_price,
+            originalPrice: product?.product_detail?.regular_price,
+            image: product.thumbnail,
+            color: "Default",
+            size: "Default",
+            quantity: 1,
+        }
+
+        dispatch(addToCart(cartItem))
+        alert(`${product.name} added to cart!`)
+    }
 
     const {
         selectedImageIndex,
@@ -37,7 +55,6 @@ export default function ProductPage() {
         handleColorSelect,
         handleSizeSelect,
         handleQuantityChange,
-        handleAddToCart,
     } = useProduct(getProductData?.data)
 
     if (productLoading) {

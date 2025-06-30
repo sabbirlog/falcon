@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import type { Category, Subcategory } from "@/types/product"
 import { ArrowLeft, ChevronRight, Menu } from "lucide-react"
+import Image from "next/image"
 import { useState } from "react"
 
 interface CategoriesDrawerProps {
@@ -22,7 +23,6 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
       setSelectedCategory(category)
       setCurrentLevel("subcategory")
     } else {
-      // Navigate to category page
       console.log("Navigate to category:", category.slug)
       setIsOpen(false)
     }
@@ -33,7 +33,6 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
       setSelectedSubcategory(subcategory)
       setCurrentLevel("subchild")
     } else {
-      // Navigate to subcategory page
       console.log("Navigate to subcategory:", subcategory.slug)
       setIsOpen(false)
     }
@@ -59,7 +58,6 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
     if (!open) {
-      // Reset state when closing
       setCurrentLevel("main")
       setSelectedCategory(null)
       setSelectedSubcategory(null)
@@ -72,14 +70,16 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
         <Button
           key={category.id}
           variant="ghost"
-          className="w-full justify-between h-auto p-3 text-left hover:bg-gray-100"
+          className="w-full justify-between h-auto p-3 text-left hover:bg-gray-100 border-0"
           onClick={() => handleCategoryClick(category)}
         >
           <div className="flex items-center space-x-3">
             {category.image && (
-              <img
+              <Image
                 src={category.image || "/placeholder.svg"}
                 alt={category.name}
+                height={6}
+                width={50}
                 className="w-6 h-6 rounded object-cover"
                 onError={(e) => {
                   e.currentTarget.style.display = "none"
@@ -98,7 +98,7 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
     <div className="space-y-1">
       <Button
         variant="ghost"
-        className="w-full justify-start h-auto p-3 text-left border-b hover:bg-gray-100"
+        className="w-full justify-start h-auto p-3 text-left border-0 hover:bg-gray-100"
         onClick={handleBack}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
@@ -113,10 +113,12 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
         >
           <div className="flex items-center space-x-3">
             {subcategory.image && (
-              <img
+              <Image
                 src={subcategory.image || "/placeholder.svg"}
                 alt={subcategory.name}
                 className="w-6 h-6 rounded object-cover"
+                height={6}
+                width={50}
                 onError={(e) => {
                   e.currentTarget.style.display = "none"
                 }}
@@ -134,7 +136,7 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
     <div className="space-y-1">
       <Button
         variant="ghost"
-        className="w-full justify-start h-auto p-3 text-left border-b hover:bg-gray-100"
+        className="w-full justify-start h-auto p-3 text-left border-0 hover:bg-gray-100"
         onClick={handleBack}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
@@ -149,10 +151,12 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
         >
           <div className="flex items-center space-x-3">
             {subchild.image && (
-              <img
+              <Image
                 src={subchild.image || "/placeholder.svg"}
                 alt={subchild.name}
                 className="w-6 h-6 rounded object-cover"
+                  height={6}
+                width={50}
                 onError={(e) => {
                   e.currentTarget.style.display = "none"
                 }}
@@ -177,15 +181,15 @@ export default function CategoriesDrawer({ categories }: Readonly<CategoriesDraw
           Categories
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-80 p-0">
-        <SheetHeader className="p-4 border-b bg-white">
+      <SheetContent side="left" className="w-80 p-0 border-r border-gray-50">
+        <SheetHeader className="p-4 border-b border-gray-100 shadow-sm bg-white">
           <SheetTitle className="text-left text-lg font-semibold">
             {currentLevel === "main" && "Categories"}
             {currentLevel === "subcategory" && selectedCategory?.name}
             {currentLevel === "subchild" && selectedSubcategory?.name}
           </SheetTitle>
         </SheetHeader>
-        <ScrollArea className="h-[calc(100vh-80px)] bg-white">
+        <ScrollArea className="h-[calc(100vh-60px)] bg-white">
           <div className="p-4">
             {currentLevel === "main" && renderMainCategories()}
             {currentLevel === "subcategory" && renderSubcategories()}

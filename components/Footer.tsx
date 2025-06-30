@@ -94,7 +94,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-between mt-[48px]">
+        <div className="flex items-center justify-between mt-[48px] flex-wrap">
           <div className="flex items-center">
             <h5 className="text-base font-medium">
               Follow us on

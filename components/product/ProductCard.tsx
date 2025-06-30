@@ -1,7 +1,7 @@
 'use client'
 
-import { addToCart } from "@/redux/features/cart/cartSlice"
-import { useAppDispatch } from "@/redux/hooks"
+import { addToCart, selectCartItems } from "@/redux/features/cart/cartSlice"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { Product } from "@/types/product"
 import { ShoppingCart, Star } from "lucide-react"
 import Image from "next/image"
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter } from "../ui/card"
+
 
 export default function ProductCard({
     product
@@ -18,6 +19,10 @@ export default function ProductCard({
 
     const router = useRouter();
     const dispatch = useAppDispatch();
+
+    const cartItems = useAppSelector(selectCartItems)
+
+    const isItemInCart = cartItems?.some((item) => item.id === product.id);
 
     const handleAddToCart = (product: Product) => {
         const cartItem = {
@@ -76,9 +81,9 @@ export default function ProductCard({
             </CardContent>
 
             <CardFooter className="p-4 pt-0">
-                <Button className="w-full text-white cursor-pointer bg-emerald-600 hover:bg-emerald-700" onClick={() => handleAddToCart(product)}>
+                <Button className={`w-full text-white ${isItemInCart ? "bg-gray-400 hover:bg-gray-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700 "}`} onClick={() => handleAddToCart(product)}>
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    Add to Cart
+                    {isItemInCart ? "Added" : "Add to Cart"}
                 </Button>
             </CardFooter>
         </Card>

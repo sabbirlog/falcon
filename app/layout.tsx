@@ -3,12 +3,12 @@ import Header from "@/components/Header"
 import ReactQueryProvider from "@/providers/ReactQueryProvider"
 import ReduxProvider from "@/providers/ReduxProvider"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Onest } from "next/font/google"
 import type React from "react"
 import { Suspense } from "react"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Onest({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Falcon - Your Trusted Online Marketplace",

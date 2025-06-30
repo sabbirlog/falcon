@@ -12,7 +12,7 @@ export default function CartPage() {
     const dispatch = useAppDispatch()
     const cartItems = useAppSelector(selectCartItems)
     const totalItems = useAppSelector(selectCartTotalItems)
-    
+
     const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false)
 
     const allSelected = cartItems.length > 0 && cartItems.every((item) => item.selected)
@@ -51,12 +51,11 @@ export default function CartPage() {
 
     return (
         <main className="min-h-screen bg-gray-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <Breadcrumb items={breadcrumbItems} />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Cart Items */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 bg-white rounded-lg border border-gray-100 p-6">
                         <CartHeader
                             itemCount={cartItems.length}
                             selectAll={allSelected}
@@ -64,7 +63,7 @@ export default function CartPage() {
                             onClearAll={handleClearAll}
                         />
 
-                        <div className="bg-white rounded-lg border border-gray-200 p-6">
+                        <div>
                             {cartItems?.length === 0 ? (
                                 <div className="text-center py-12">
                                     <p className="text-gray-500 text-lg">Your cart is empty</p>

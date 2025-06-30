@@ -56,14 +56,14 @@ export function OrderSummary({
     setCouponError("")
   }
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 h-fit">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Order summary</h2>
+    <div className="bg-white rounded-lg border border-gray-100 p-6 h-fit">
+      <h2 className="text-[24px] font-medium text-[#475569] mb-6">Order summary</h2>
 
       <div className="space-y-4 mb-6">
-        <div className="border-t border-gray-200 pt-4 mb-6">
+        <div>
           <div className="flex justify-between text-xl font-bold">
-            <span>Price ({totalItems} items)</span>
-            <span className="text-emerald-600">৳{subtotal.toFixed(2)}</span>
+            <span className="text-base font-medium">Price ({totalItems} items)</span>
+            <span className="text-[#0F172A] font-normal">৳{subtotal.toFixed(2) ?? '00'}</span>
           </div>
         </div>
         {couponDiscount > 0 && (
@@ -138,7 +138,7 @@ export function OrderSummary({
           )}
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between pb-4">
         <span className="text-gray-600">Subtotal</span>
         <span className="font-medium">৳{totalPrice.toFixed(2)}</span>
       </div>

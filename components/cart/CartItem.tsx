@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { CartItem } from "@/types/cart"
 import { Minus, Plus, Trash2 } from "lucide-react"
+import Image from "next/image"
 
 interface CartItemProps {
   item: CartItem
@@ -27,12 +28,11 @@ export function CartItemComponent({ item, onQuantityChange, onRemove, onToggleSe
         </div>
       </div>
 
-      {/* Product Details */}
-      <div className="flex items-start space-x-4 ml-9">
+      <div className="flex items-start space-x-4">
         <Checkbox checked={item.selected} onCheckedChange={() => onToggleSelect(item.id)} className="mt-2" />
 
         <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-          <img src={item.image || "/placeholder.svg"} alt={item.name} className="w-full h-full object-cover" />
+          <Image src={item?.image || "/placeholder.svg"} height={20} width={100} alt={item.name} className="w-full h-full object-cover" />
         </div>
 
         <div className="flex-1 min-w-0">
